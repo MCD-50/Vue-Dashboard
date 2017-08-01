@@ -94,6 +94,9 @@ export default {
 		CurrentPath() {
 			return this.$route.path;
 		},
+		ContentMargin() {
+			return { 'margin-left': `${this.$store.getters.appContentMargin}px` };
+		},
 		DeviceType(){
 			return this.$store.getters.appDeviceType;
 		},
@@ -116,7 +119,7 @@ export default {
 				this.$router.push(item.path)
 				if(this.$store.getters.appDeviceType == deviceType.PHONE){
 					this.$store.dispatch('setSidebarMargin', 0)
-					this.toggleLeftSidenav()
+					this.$refs.leftSidenav.close()
 				}
 			}
 		},

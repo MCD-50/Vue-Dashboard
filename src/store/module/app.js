@@ -15,6 +15,7 @@ const mutations = {
 	},
 	SET_SIDEBAR_MARGIN(state, payload) {
 		state.sidebarMargin = payload;
+		console.log(state, payload);
 		if (state.deviceType == deviceType.PHONE) {
 			state.contentMargin = 0;
 		} else if (state.deviceType == deviceType.TABLET) {

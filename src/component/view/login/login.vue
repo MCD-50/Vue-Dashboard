@@ -40,7 +40,6 @@
 
 export default {
 	beforeMount() {
-		this.$store.dispatch('setSidebarMargin', 0);
 		this.$store.dispatch('setCurrentRoute', '/login');
 	},
 	mounted() {

@@ -27,8 +27,9 @@ export default {
 			this.setDeviceType(width);
 		};
 	},
+	
 	mounted() {
-		if (this.DeviceType == deviceType.PHONE) {
+		if (this.IsLoginPage || this.DeviceType == deviceType.PHONE) {
 			this.$store.dispatch('setSidebarMargin', 0);
 		}else{
 			this.$store.dispatch('setSidebarMargin', 300);
