@@ -50,14 +50,14 @@
 import Vue from 'vue';
 import { APP_NAME } from '../helper/constant.js';
 import { sideBarItems } from '../sidebar';
+import { deviceType } from '../helper/enum/deviceType.js'
 
 export default {
-
 	beforeMount() {
 		
 	},
 	mounted() {
-		if (this.$store.getters.appSidebarMargin > 0) {
+		if (!this.IsLoginPage) {
 			this.$refs.leftSidenav.open();
 		}
 	},
@@ -76,7 +76,7 @@ export default {
 		}
 	},
 	components: {
-		
+
 	},
 	computed: {
 		IsLoginPage() {
@@ -89,7 +89,7 @@ export default {
 			return { 'margin-left': `${this.$store.getters.appSidebarMargin}px` };
 		},
 		SideBarWidth() {
-			return { 'width':  `${this.$store.getters.appSidebarMargin}px` };
+			return { 'width': `${this.$store.getters.appSidebarMargin}px` };
 		},
 		CurrentPath() {
 			return this.$route.path;
@@ -111,6 +111,9 @@ export default {
 		clickRoute(e, item) {
 			if (item.children == undefined) {
 				this.$router.push(item.path)
+				if (this.$store.getters.appDeviceType == deviceType.PHONE) {
+					this.$store.dispatch('setSidebarMargin', 0)
+				}
 			}
 		},
 	}

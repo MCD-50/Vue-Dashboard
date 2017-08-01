@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<SideBar></SideBar>
-		<div :style="[SideBarMargin]">
+		<div :style="[ContentMargin]">
 			<md-progress md-indeterminate class="md-accent" v-if="IsProgressVisible"></md-progress>
 			<div class="content-div">
 				<transition name="md-router" appear>
@@ -15,13 +15,24 @@
 
 <script>
 import SideBar from './sideBar.vue';
+import { deviceType } from '../helper/enum/deviceType.js'
+
 
 export default {
 	beforeMount() {
-		this.$store.dispatch('setSidebarMargin', 300)
+		this.$store.dispatch('setSidebarMargin', 300);
+		window.onresize = (e) => {
+			if (e && e.target.innerWidth < 600) {
+				this.$store.dispatch('setDeviceType', deviceType.PHONE);
+			} else if (e && e.target.innerWidth > 600 && e.target.innerWidth < 900) {
+				this.$store.dispatch('setDeviceType', deviceType.TABLET);
+			} else {
+				this.$store.dispatch('setDeviceType', deviceType.DESKTOP);
+			}
+		};
 	},
 	mounted() {
-
+		
 	},
 	beforeDestroy() {
 
@@ -33,14 +44,17 @@ export default {
 		SideBar,
 	},
 	computed: {
-		IsLoginPage() {
-			return this.$store.getters.appCurrentRoute == '/login' ? true : false;
-		},
 		SideBarMargin() {
-			return { 'margin-left': `${this.$store.getters.appSidebarMargin}px` };
+			return { 'margin-left': `${this.$store.getters.appSideBarMargin}px` };
 		},
 		IsProgressVisible() {
 			return this.$store.getters.appIsProgressVisible;
+		},
+		ContentMargin() {
+			return { 'margin-left': `${this.$store.getters.appContentMargin}px` };
+		},
+		IsLoginPage() {
+			return this.$store.getters.appCurrentRoute == '/login' ? true : false;
 		}
 	},
 	methods: {
@@ -114,7 +128,14 @@ body {
 }
 
 .base-div {
-	padding-top: 64px;
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+}
+
+.dashboard-card {
+	margin-top: .5em;
+	margin-bottom: .5em;
 }
 
 .md-toolbar.md-theme-default {

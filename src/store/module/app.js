@@ -3,6 +3,7 @@ import { deviceType } from '../../helper/enum/deviceType';
 const state = {
 	currentRoute: '/login',
 	sidebarMargin: 300,
+	contentMargin: 300,
 	deviceType: deviceType.TABLET,
 	isProgressVisible: false,
 	translate3D: true,
@@ -14,6 +15,13 @@ const mutations = {
 	},
 	SET_SIDEBAR_MARGIN(state, payload) {
 		state.sidebarMargin = payload;
+		if (state.deviceType == deviceType.PHONE) {
+			state.contentMargin = 0;
+		} else if (state.deviceType == deviceType.TABLET) {
+			state.contentMargin = payload;
+		} else {
+			state.contentMargin = payload;
+		}
 	},
 	SET_DEVICE_TYPE(state, payload) {
 		state.deviceType = payload;
@@ -47,6 +55,7 @@ const actions = {
 const getters = {
 	appCurrentRoute: state => state.currentRoute,
 	appSidebarMargin: state => state.sidebarMargin,
+	appContentMargin: state => state.contentMargin,
 	appDeviceType: state => state.deviceType,
 	appIsProgressVisible: state => state.isProgressVisible,
 	appTranslate3D: state => state.translate3D
