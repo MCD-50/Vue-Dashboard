@@ -1,6 +1,6 @@
 <template>
 	<div class="left-sidenav-container">
-		<md-toolbar :style="[SideBarMargin]" class="admin-toolbar">
+		<md-toolbar :style="[ContentMargin]" class="admin-toolbar">
 			<div class="md-toolbar-container top-fixed-bar">
 				<md-button v-if="!IsLoginPage" class="md-icon-button" @click="toggleLeftSidenav">
 					<md-icon>menu</md-icon>
@@ -57,7 +57,7 @@ export default {
 		
 	},
 	mounted() {
-		if (!this.IsLoginPage) {
+		if (!this.IsLoginPage && this.DeviceType != deviceType.PHONE) {
 			this.$refs.leftSidenav.open();
 		}
 	},
@@ -94,6 +94,9 @@ export default {
 		CurrentPath() {
 			return this.$route.path;
 		},
+		DeviceType(){
+			return this.$store.getters.appDeviceType;
+		},
 		Items() {
 			return sideBarItems;
 		},
@@ -111,8 +114,9 @@ export default {
 		clickRoute(e, item) {
 			if (item.children == undefined) {
 				this.$router.push(item.path)
-				if (this.$store.getters.appDeviceType == deviceType.PHONE) {
+				if(this.$store.getters.appDeviceType == deviceType.PHONE){
 					this.$store.dispatch('setSidebarMargin', 0)
+					this.toggleLeftSidenav()
 				}
 			}
 		},

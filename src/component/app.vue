@@ -20,20 +20,21 @@ import { deviceType } from '../helper/enum/deviceType.js'
 
 export default {
 	beforeMount() {
-		this.$store.dispatch('setSidebarMargin', 300);
+		let width = window.innerWidth;
+		this.setDeviceType(width);
 		window.onresize = (e) => {
-			if (e && e.target.innerWidth < 600) {
-				this.$store.dispatch('setDeviceType', deviceType.PHONE);
-			} else if (e && e.target.innerWidth > 600 && e.target.innerWidth < 900) {
-				this.$store.dispatch('setDeviceType', deviceType.TABLET);
-			} else {
-				this.$store.dispatch('setDeviceType', deviceType.DESKTOP);
-			}
+			width = e.target.innerWidth || 900;
+			this.setDeviceType(width);
 		};
 	},
 	mounted() {
-		
+		if (this.DeviceType == deviceType.PHONE) {
+			this.$store.dispatch('setSidebarMargin', 0);
+		}else{
+			this.$store.dispatch('setSidebarMargin', 300);
+		}
 	},
+
 	beforeDestroy() {
 
 	},
@@ -47,6 +48,9 @@ export default {
 		SideBarMargin() {
 			return { 'margin-left': `${this.$store.getters.appSideBarMargin}px` };
 		},
+		DeviceType() {
+			return this.$store.getters.appDeviceType;
+		},
 		IsProgressVisible() {
 			return this.$store.getters.appIsProgressVisible;
 		},
@@ -58,7 +62,15 @@ export default {
 		}
 	},
 	methods: {
-
+		setDeviceType(width) {
+			if (width < 600) {
+				this.$store.dispatch('setDeviceType', deviceType.PHONE);
+			} else if (width > 600 && width < 900) {
+				this.$store.dispatch('setDeviceType', deviceType.TABLET);
+			} else {
+				this.$store.dispatch('setDeviceType', deviceType.DESKTOP);
+			}
+		}
 	}
 }
 </script>
